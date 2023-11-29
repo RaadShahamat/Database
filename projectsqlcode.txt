@@ -1,0 +1,318 @@
+DROP TABLE menu;
+DROP TABLE address;
+DROP TABLE rating;
+DROP TABLE payment;
+DROP TABLE drivers;
+DROP TABLE orders;
+DROP TABLE restaurants;
+DROP TABLE customer;
+
+
+set linesize 500;
+
+-- Create sequences for unique IDs for each table
+CREATE SEQUENCE customer_id_seq3 START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE restaurant_id_seq3 START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE order_id_seq3 START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE driver_id_seq3 START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE payment_id_seq3 START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE rating_id_seq3 START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE address_id_seq3 START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE menu_id_seq3 START WITH 1 INCREMENT BY 1;
+
+-- Create the Customer table with an auto-increment primary key
+CREATE TABLE Customer (
+    user_id NUMBER PRIMARY KEY,
+    user_name VARCHAR2(30) NOT NULL,
+    email VARCHAR2(20) NOT NULL,
+    password VARCHAR2(20) NOT NULL,
+    phone VARCHAR2(20) NOT NULL
+);
+
+-- Create a trigger to auto-generate the primary key value for the Customer table
+CREATE OR REPLACE TRIGGER customer_id_trigger
+BEFORE INSERT ON Customer
+FOR EACH ROW
+BEGIN
+    SELECT customer_id_seq3.NEXTVAL INTO :new.user_id FROM dual;
+END;
+/
+
+-- Create the Restaurants table with an auto-increment primary key
+CREATE TABLE Restaurants (
+    restaurant_id NUMBER PRIMARY KEY,
+    restaurant_name VARCHAR2(30) NOT NULL,
+    location VARCHAR2(50) NOT NULL,
+    phone VARCHAR2(20) NOT NULL
+);
+
+-- Create a trigger to auto-generate the primary key value for the Restaurants table
+CREATE OR REPLACE TRIGGER restaurant_id_trigger
+BEFORE INSERT ON Restaurants
+FOR EACH ROW
+BEGIN
+    SELECT restaurant_id_seq3.NEXTVAL INTO :new.restaurant_id FROM dual;
+END;
+/
+
+
+-- Create the Drivers table with an auto-increment primary key
+CREATE TABLE Drivers (
+    driver_id NUMBER PRIMARY KEY,
+    driver_name VARCHAR2(30) NOT NULL,
+    phone VARCHAR2(20) NOT NULL,
+    location VARCHAR2(50) NOT NULL,
+    email VARCHAR2(30) NOT NULL
+);
+
+-- Create a trigger to auto-generate the primary key value for the Drivers table
+CREATE OR REPLACE TRIGGER driver_id_trigger
+BEFORE INSERT ON Drivers
+FOR EACH ROW
+BEGIN
+    SELECT driver_id_seq3.NEXTVAL INTO :new.driver_id FROM dual;
+END;
+/
+
+
+-- Create the Orders table with an auto-increment primary key
+CREATE TABLE Orders (
+    order_id NUMBER PRIMARY KEY,
+    user_id NUMBER NOT NULL,
+    restaurant_id NUMBER NOT NULL,
+    driver_id NUMBER NOT NULL,
+    order_total DECIMAL(10,2) NOT NULL,
+    delivery_status VARCHAR2(20) NOT NULL,
+    order_date DATE
+);
+
+-- Create a trigger to auto-generate the primary key value for the Orders table
+CREATE OR REPLACE TRIGGER order_id_trigger
+BEFORE INSERT ON Orders
+FOR EACH ROW
+BEGIN
+    SELECT order_id_seq3.NEXTVAL INTO :new.order_id FROM dual;
+END;
+/
+
+
+
+-- Create the Payment table with an auto-increment primary key
+CREATE TABLE Payment (
+    payment_id NUMBER PRIMARY KEY,
+    order_id NUMBER NOT NULL,
+    payment_method VARCHAR2(20) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    status VARCHAR2(20) NOT NULL
+);
+
+-- Create a trigger to auto-generate the primary key value for the Payment table
+CREATE OR REPLACE TRIGGER payment_id_trigger
+BEFORE INSERT ON Payment
+FOR EACH ROW
+BEGIN
+    SELECT payment_id_seq3.NEXTVAL INTO :new.payment_id FROM dual;
+END;
+/
+
+-- Create the Rating table with an auto-increment primary key
+CREATE TABLE Rating (
+    rating_id NUMBER PRIMARY KEY,
+    user_id NUMBER NOT NULL,
+    restaurant_id NUMBER NOT NULL,
+    rating NUMBER NOT NULL
+);
+
+-- Create a trigger to auto-generate the primary key value for the Rating table
+CREATE OR REPLACE TRIGGER rating_id_trigger
+BEFORE INSERT ON Rating
+FOR EACH ROW
+BEGIN
+    SELECT rating_id_seq3.NEXTVAL INTO :new.rating_id FROM dual;
+END;
+/
+
+-- Create the Address table with an auto-increment primary key
+CREATE TABLE Address (
+    address_id NUMBER PRIMARY KEY,
+    user_id NUMBER NOT NULL,
+    city VARCHAR2(20) NOT NULL,
+    street VARCHAR2(30) NOT NULL,
+    pincode NUMBER NOT NULL
+);
+
+-- Create a trigger to auto-generate the primary key value for the Address table
+CREATE OR REPLACE TRIGGER address_id_trigger
+BEFORE INSERT ON Address
+FOR EACH ROW
+BEGIN
+    SELECT address_id_seq3.NEXTVAL INTO :new.address_id FROM dual;
+END;
+/
+
+-- Create the Menu table with an auto-increment primary key
+CREATE TABLE Menu (
+    menu_id NUMBER PRIMARY KEY,
+    restaurant_id NUMBER NOT NULL,
+    item_name VARCHAR2(30) NOT NULL,
+    price DECIMAL(10,2) NOT NULL
+);
+
+-- Create a trigger to auto-generate the primary key value for the Menu table
+CREATE OR REPLACE TRIGGER menu_id_trigger
+BEFORE INSERT ON Menu
+FOR EACH ROW
+BEGIN
+    SELECT menu_id_seq3.NEXTVAL INTO :new.menu_id FROM dual;
+END;
+/
+
+
+INSERT INTO Customer (user_name, email, password, phone) VALUES('raad', 'raadshmt@email.com', 'password123', '123-456-7890');
+INSERT INTO Customer (user_name, email, password, phone) VALUES('Ali', 'ali@email.com', 'securepass', '987-654-3210');
+INSERT INTO Customer (user_name, email, password, phone) VALUES('Tayef', 'tayefur@email.com', 'pass123', '555-123-4567');
+INSERT INTO Customer (user_name, email, password, phone) VALUES('Moon', 'evmoon@email.com', 'mysecret', '444-555-6666');
+INSERT INTO Customer (user_name, email, password, phone) VALUES('Arif', 'arifhosn@email.com', 'brown123', '111-222-3333');
+INSERT INTO Customer (user_name, email, password, phone) VALUES('Lee', 'davidlee@email.com', 'dlee99', '777-888-9999');
+INSERT INTO Customer (user_name, email, password, phone) VALUES('Grace', 'graceis@email.com', 'password123', '123-555-9999');
+INSERT INTO Customer (user_name, email, password, phone) VALUES('Adam', 'adam@email.com', 'linda321', '555-111-9999');
+INSERT INTO Customer (user_name, email, password, phone) VALUES('Michael', 'michk@email.com', 'mclark', '333-222-1111');
+INSERT INTO Customer (user_name, email, password, phone) VALUES('Sarah', 'sawhite@email.com', 'white123', '123-333-1111');
+
+
+INSERT INTO Restaurants (restaurant_name, location, phone) VALUES('Restaurant A', 'Dhaka', '111-222-3333');
+INSERT INTO Restaurants (restaurant_name, location, phone) VALUES('Restaurant B', 'Khulna', '444-555-6666');
+INSERT INTO Restaurants (restaurant_name, location, phone) VALUES('Restaurant C', 'Chittagong', '777-888-9999');
+INSERT INTO Restaurants (restaurant_name, location, phone) VALUES('Restaurant D', 'Khulna', '888-777-9999');
+INSERT INTO Restaurants (restaurant_name, location, phone) VALUES('Restaurant E', 'Dhaka', '333-222-1111');
+INSERT INTO Restaurants (restaurant_name, location, phone) VALUES('Restaurant F', 'Dhaka', '123-555-9999');
+INSERT INTO Restaurants (restaurant_name, location, phone) VALUES('Restaurant G', 'Rajshahi', '555-111-9999');
+INSERT INTO Restaurants (restaurant_name, location, phone) VALUES('Restaurant H', 'Khulna', '555-123-4567');
+INSERT INTO Restaurants (restaurant_name, location, phone) VALUES('Restaurant I', 'Chittagong', '987-654-3210');
+INSERT INTO Restaurants (restaurant_name, location, phone) VALUES('Restaurant J', 'Dhaka', '123-456-7890');
+
+
+INSERT INTO Orders (user_id, restaurant_id, driver_id, order_total, delivery_status, order_date) VALUES(1, 1, 2, 2, 'Delivered', TO_DATE('2023-10-20', 'YYYY-MM-DD'));
+INSERT INTO Orders (user_id, restaurant_id, driver_id, order_total, delivery_status, order_date) VALUES(2, 2, 1, 3, 'In Progress', TO_DATE('2023-10-21', 'YYYY-MM-DD'));
+INSERT INTO Orders (user_id, restaurant_id, driver_id, order_total, delivery_status, order_date) VALUES(3, 1, 4, 2, 'Delivered', TO_DATE('2023-10-22', 'YYYY-MM-DD'));
+INSERT INTO Orders (user_id, restaurant_id, driver_id, order_total, delivery_status, order_date) VALUES(4, 3, 2, 1, 'Delivered', TO_DATE('2023-10-23', 'YYYY-MM-DD'));
+INSERT INTO Orders (user_id, restaurant_id, driver_id, order_total, delivery_status, order_date) VALUES(5, 2, 5, 4, 'Delivered', TO_DATE('2023-10-24', 'YYYY-MM-DD'));
+INSERT INTO Orders (user_id, restaurant_id, driver_id, order_total, delivery_status, order_date) VALUES(6, 4, 3, 1, 'In Progress', TO_DATE('2023-10-25', 'YYYY-MM-DD'));
+INSERT INTO Orders (user_id, restaurant_id, driver_id, order_total, delivery_status, order_date) VALUES(7, 3, 7, 2, 'In Progress', TO_DATE('2023-10-26', 'YYYY-MM-DD'));
+INSERT INTO Orders (user_id, restaurant_id, driver_id, order_total, delivery_status, order_date) VALUES(8, 5, 8, 3, 'Delivered', TO_DATE('2023-10-27', 'YYYY-MM-DD'));
+INSERT INTO Orders (user_id, restaurant_id, driver_id, order_total, delivery_status, order_date) VALUES(9, 4, 2, 5, 'Delivered', TO_DATE('2023-10-28', 'YYYY-MM-DD'));
+INSERT INTO Orders (user_id, restaurant_id, driver_id, order_total, delivery_status, order_date) VALUES(10, 2, 8, 1, 'Delivered', TO_DATE('2023-10-29', 'YYYY-MM-DD'));
+INSERT INTO Orders (user_id, restaurant_id, driver_id, order_total, delivery_status, order_date) VALUES(3, 1, 3, 2, 'Delivered', TO_DATE('2023-10-24', 'YYYY-MM-DD'));
+
+INSERT INTO Drivers (driver_name, phone, location, email) VALUES('Driver 1', '111-222-3333', 'Dhaka', 'driver1@email.com');
+INSERT INTO Drivers (driver_name, phone, location, email) VALUES('Driver 2', '444-555-6666', 'Dhaka', 'driver2@email.com');
+INSERT INTO Drivers (driver_name, phone, location, email) VALUES('Driver 3', '777-888-9999', 'Khulna', 'driver3@email.com');
+INSERT INTO Drivers (driver_name, phone, location, email) VALUES('Driver 4', '888-777-9999', 'Khulna', 'driver4@email.com');
+INSERT INTO Drivers (driver_name, phone, location, email) VALUES('Driver 5', '333-222-1111', 'Chittagong', 'driver5@email.com');
+INSERT INTO Drivers (driver_name, phone, location, email) VALUES('Driver 6', '123-555-9999', 'Dhaka', 'driver6@email.com');
+INSERT INTO Drivers (driver_name, phone, location, email) VALUES('Driver 7', '555-111-9999', 'Dhaka', 'driver7@email.com');
+INSERT INTO Drivers (driver_name, phone, location, email) VALUES('Driver 8', '555-123-4567', 'Chittagong', 'driver8@email.com');
+INSERT INTO Drivers (driver_name, phone, location, email) VALUES('Driver 9', '987-654-3210', 'Dhaka', 'driver9@email.com');
+INSERT INTO Drivers (driver_name, phone, location, email) VALUES('Driver 10', '123-456-7890', 'Khulna', 'driver10@email.com');
+
+
+INSERT INTO Address (user_id, city, street, pincode) VALUES(1, 'Dhaka', 'Moghbazar', 90001);
+INSERT INTO Address (user_id, city, street, pincode) VALUES(2, 'Dhaka', 'Dhanmondi', 10001);
+INSERT INTO Address (user_id, city, street, pincode) VALUES(3, 'Khulna', 'Fulbarigate', 94101);
+INSERT INTO Address (user_id, city, street, pincode) VALUES(4, 'Dhaka', 'Baily Road', 77001);
+INSERT INTO Address (user_id, city, street, pincode) VALUES(5, 'Khulna', 'Daulotpur', 14201);
+INSERT INTO Address (user_id, city, street, pincode) VALUES(6, 'Chittagong', 'city state', 78701);
+INSERT INTO Address (user_id, city, street, pincode) VALUES(7, 'Chittagong', 'new market', 92101);
+INSERT INTO Address (user_id, city, street, pincode) VALUES(8, 'Dhaka', 'Gulisthan', 33101);
+INSERT INTO Address (user_id, city, street, pincode) VALUES(9, 'Dhaka', 'Khilgaon', 32801);
+INSERT INTO Address (user_id, city, street, pincode) VALUES(10, 'Khulna', 'Shonadanga', 95101);
+
+
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(1, 'Burger', 128);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(1, 'Pizza', 1299);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(1, 'Fries', 120);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(1, 'Salad', 160);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(2, 'Sushi', 400);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(2, 'Ramen', 299);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(2, 'Tempura', 180);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(2, 'Sashimi', 699);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(3, 'Steak', 799);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(3, 'Salad', 150);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(3, 'Pasta', 350);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(3, 'Chicken', 220);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(4, 'Tacos', 199);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(4, 'Enchiladas', 299);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(4, 'Guacamole', 499);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(4, 'Quesadilla', 899);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(5, 'Sushi Roll', 499);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(5, 'Teriyaki Chicken', 1250);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(5, 'Miso Soup', 350);
+INSERT INTO Menu (restaurant_id, item_name, price) VALUES(5, 'Tempura Udon', 1099);
+
+INSERT INTO Rating (user_id, restaurant_id, rating) VALUES(1, 1, 4);
+INSERT INTO Rating (user_id, restaurant_id, rating) VALUES(2, 2, 5);
+INSERT INTO Rating (user_id, restaurant_id, rating) VALUES(3, 1, 4);
+INSERT INTO Rating (user_id, restaurant_id, rating) VALUES(4, 3, 3);
+INSERT INTO Rating (user_id, restaurant_id, rating) VALUES(5, 2, 5);
+INSERT INTO Rating (user_id, restaurant_id, rating) VALUES(6, 4, 3);
+INSERT INTO Rating (user_id, restaurant_id, rating) VALUES(7, 3, 4);
+INSERT INTO Rating (user_id, restaurant_id, rating) VALUES(8, 5, 5);
+INSERT INTO Rating (user_id, restaurant_id, rating) VALUES(9, 4, 4);
+INSERT INTO Rating (user_id, restaurant_id, rating) VALUES(10, 2, 5);
+
+
+INSERT INTO Payment (order_id, payment_method, amount, status) VALUES(1, 'Credit Card', 2500, 'Paid');
+INSERT INTO Payment (order_id, payment_method, amount, status) VALUES(2, 'PayPal', 2050, 'Paid');
+INSERT INTO Payment (order_id, payment_method, amount, status) VALUES(3, 'Cash', 1575, 'Paid');
+INSERT INTO Payment (order_id, payment_method, amount, status) VALUES(4, 'Credit Card', 3025, 'Paid');
+INSERT INTO Payment (order_id, payment_method, amount, status) VALUES(5, 'PayPal', 2200, 'Paid');
+INSERT INTO Payment (order_id, payment_method, amount, status) VALUES(6, 'Credit Card', 1750, 'Paid');
+INSERT INTO Payment (order_id, payment_method, amount, status) VALUES(7, 'Cash', 1275, 'Paid');
+INSERT INTO Payment (order_id, payment_method, amount, status) VALUES(8, 'Credit Card', 2850, 'Paid');
+INSERT INTO Payment (order_id, payment_method, amount, status) VALUES(9, 'PayPal', 3500, 'Paid');
+INSERT INTO Payment (order_id, payment_method, amount, status) VALUES(10, 'Cash', 1925, 'Paid');
+
+
+
+
+select * from customer;
+select * from restaurants;
+select * from orders;
+select * from menu;
+select * from drivers;
+select * from rating;
+select * from payment;
+select * from address;
+
+
+
+__for checking those orders which are still in progress
+select * from orders where delivery_status='In Progress';
+
+
+-- for creating top suggested restaurants based on users rating
+
+SELECT r.restaurant_id, r.restaurant_name, AVG(ra.rating) as popularity_Rating
+FROM restaurants r
+JOIN rating ra ON r.restaurant_id = ra.restaurant_id
+GROUP BY r.restaurant_id, r.restaurant_name
+ORDER BY popularity_Rating DESC;
+
+
+
+-- for calculating drivers daily salary based on their no of received orders
+
+SELECT d.driver_id, d.driver_name, COUNT(o.order_id) AS num_orders_received, COUNT(o.order_id) * 50 AS earnings
+FROM Drivers d
+LEFT JOIN Orders o ON d.driver_id = o.driver_id
+GROUP BY d.driver_id, d.driver_name
+ORDER BY d.driver_id;
+
+
+--for checking the customer who ordered most in our website
+
+SELECT c.user_id, c.user_name, COUNT(o.order_id) AS order_count
+FROM Customer c
+JOIN Orders o ON c.user_id = o.user_id
+GROUP BY c.user_id, c.user_name
+ORDER BY order_count DESC;
